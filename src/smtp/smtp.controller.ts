@@ -6,13 +6,15 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import { ContactFormMailDto } from '../dto/contactFormMailBody.dto';
+import { SmtpService } from './smtp.service';
 
 @Controller('smtp')
 export class SmtpController {
+  constructor(private readonly smtpService: SmtpService) {}
+
   @Post('sendMail')
   @UsePipes(new ValidationPipe())
   sendMailToUser(@Body() contactFormMailDto: ContactFormMailDto) {
-    console.log('contactFormMailDto', contactFormMailDto);
-    return;
+    return this.smtpService.sendMailToUser(contactFormMailDto);
   }
 }
