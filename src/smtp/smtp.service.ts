@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ContactFormMailDto } from '../dto/contactFormMailBody.dto';
+// import * as fs from 'fs';
 
 @Injectable()
 export class SmtpService {
@@ -14,14 +15,24 @@ export class SmtpService {
       },
     });
 
-    JSON.parse(process.env.EMAIL_TO).forEach((email) => {
+    // const logoPath = 'src/assets/images/logo-grenier-compressed.png';
+    // const logoAsBase64 = fs.readFileSync(logoPath, 'base64');
+
+    JSON.parse(process.env.EMAIL_TO).forEach((email: string) => {
       const mailOptions = {
         from: process.env.EMAIL_FROM,
         to: email,
-        subject: contactFormMailDto.subject,
-        text: `Message de : ${contactFormMailDto.userName}\n
-          Mail : ${contactFormMailDto.userMail}\n
-          Message :\n${contactFormMailDto.message}`,
+        subject: `Le Grenier: ${contactFormMailDto.subject}`,
+        html: `
+          <!DOCTYPE html>
+          <html>
+          <body><div>
+          <p>Message de : ${contactFormMailDto.userName}</p>
+          <p>Au sujet de : ${contactFormMailDto.subject}</p>
+          <p>Mail : ${contactFormMailDto.userMail}</p>
+          <p>Message :\n${contactFormMailDto.message}</p>
+          </div></body>
+          </html>`,
       };
 
       transporter.sendMail(mailOptions, function (error, info) {
