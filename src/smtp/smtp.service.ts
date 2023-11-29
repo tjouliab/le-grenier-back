@@ -30,7 +30,7 @@ export class SmtpService {
           <p>Message de : ${contactFormMailDto.userName}</p>
           <p>Au sujet de : ${contactFormMailDto.subject}</p>
           <p>Mail : ${contactFormMailDto.userMail}</p>
-          <p>Message :\n${contactFormMailDto.message}</p>
+          <p style="white-space: pre-wrap;">Message :<br/>${contactFormMailDto.message}</p>
           </div></body>
           </html>`,
       };
