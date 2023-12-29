@@ -18,12 +18,15 @@ export class SmtpService {
     // const logoPath = 'src/assets/images/logo-grenier-compressed.png';
     // const logoAsBase64 = fs.readFileSync(logoPath, 'base64');
 
-    JSON.parse(process.env.EMAIL_TO).forEach((email: string) => {
-      const mailOptions = {
-        from: process.env.EMAIL_FROM,
-        to: email,
-        subject: `Le Grenier: ${contactFormMailDto.subject}`,
-        html: `
+    const emailsToSend = JSON.parse(process.env.EMAIL_TO);
+
+    return Promise.all(
+      emailsToSend.map((email: string) => {
+        const mailOptions = {
+          from: process.env.EMAIL_FROM,
+          to: email,
+          subject: `Le Grenier: ${contactFormMailDto.subject}`,
+          html: `
           <!DOCTYPE html>
           <html>
           <body><div>
@@ -33,17 +36,26 @@ export class SmtpService {
           <p style="white-space: pre-wrap;">Message :<br/>${contactFormMailDto.message}</p>
           </div></body>
           </html>`,
-      };
+        };
 
-      transporter.sendMail(mailOptions, function (error, info) {
-        if (error) {
-          console.log(error);
-        } else {
-          console.log('Email envoyé : ' + info.response);
-        }
+        return new Promise((resolve, reject) => {
+          transporter.sendMail(mailOptions, (error, info) => {
+            if (error) {
+              reject(error);
+            } else {
+              resolve(info);
+            }
+          });
+        });
+      }),
+    )
+      .then(() => {
+        console.log('Tous les e-mails ont été envoyés avec succès.');
+      })
+      .catch((error) => {
+        throw new Error(
+          `Erreur lors de l'envoi de l'e-mail : ${error.message}`,
+        );
       });
-    });
-
-    return;
   }
 }

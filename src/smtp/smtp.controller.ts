@@ -1,6 +1,8 @@
 import {
   Body,
   Controller,
+  HttpException,
+  HttpStatus,
   Post,
   UsePipes,
   ValidationPipe,
@@ -14,7 +16,12 @@ export class SmtpController {
 
   @Post('sendMail')
   @UsePipes(new ValidationPipe())
-  sendMailToUser(@Body() contactFormMailDto: ContactFormMailDto) {
-    return this.smtpService.sendMailToUser(contactFormMailDto);
+  async sendMailToUser(@Body() contactFormMailDto: ContactFormMailDto) {
+    try {
+      await this.smtpService.sendMailToUser(contactFormMailDto);
+      return { message: 'E-mails envoyés avec succès' };
+    } catch (error) {
+      throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 }
