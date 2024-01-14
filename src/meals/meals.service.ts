@@ -32,8 +32,7 @@ export class MealsService {
     ];
   }
 
-  async addImageToMeals(meals: MealDto[]): Promise<MealDto[]> {
-    const mealsToReturn: MealDto[] = [];
+  async addUrlImageToPath(meals: MealDto[]): Promise<MealDto[]> {
     const imagesDirectory: string = path.resolve(
       __dirname,
       '../../src/assets/images/meals',
@@ -44,17 +43,12 @@ export class MealsService {
         const imagePath =
           files.find((file) => file === meal.imagePath) ||
           MealPlaceholderFileName;
-        const fullImagePath = path.join(imagesDirectory, imagePath);
-        const encodedImage = fs.readFileSync(fullImagePath).toString('base64');
-        meal.encodedImage = encodedImage;
-        mealsToReturn.push({
-          ...meal,
-          encodedImage,
-        });
+        const fullImagePath = `${process.env.IMAGES_PATH_URL}meals/${imagePath}`;
+        meal.imageUrl = fullImagePath;
       });
     } catch (err) {
       throw new HttpException(err.message, HttpStatus.INTERNAL_SERVER_ERROR);
     }
-    return mealsToReturn;
+    return meals;
   }
 }

@@ -12,6 +12,6 @@ export class MealsController {
     if (mealsFound.length === 0) {
       return;
     }
-    return this.mealsService.addImageToMeals(mealsFound);
+    return this.mealsService.addUrlImageToPath(mealsFound);
   }
 }

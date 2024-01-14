@@ -5,11 +5,16 @@ import { SmtpModule } from './smtp/smtp.module';
 import { MealsModule } from './meals/meals.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { MealEntity } from './meals/entities/meal.entity';
+import { join } from 'path';
+import { ServeStaticModule } from '@nestjs/serve-static';
 
 @Module({
   imports: [
     SmtpModule,
     MealsModule,
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', ''),
+    }),
     // TypeOrmModule.forRoot({
     //   type: 'mysql',
     //   host: 'localhost',

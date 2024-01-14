@@ -23,7 +23,7 @@ export class MealDto {
   allergies?: AllergiesName[] = [];
 
   @IsOptional()
-  encodedImage?: string;
+  imageUrl?: string;
 }
 
 export enum MealPrices {
