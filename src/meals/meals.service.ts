@@ -1,5 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { AllergiesName, MealDto, MealPrices, MealTypes } from './dto/meal.dto';
+import * as fs from 'fs';
+import * as path from 'path';
+
+const MealPlaceholderFileName = 'meal-placeholder.png';
 
 @Injectable()
 export class MealsService {
@@ -26,5 +30,31 @@ export class MealsService {
         allergies: [AllergiesName.Egg],
       },
     ];
+  }
+
+  async addImageToMeals(meals: MealDto[]): Promise<MealDto[]> {
+    const mealsToReturn: MealDto[] = [];
+    const imagesDirectory: string = path.resolve(
+      __dirname,
+      '../../src/assets/images/meals',
+    );
+    try {
+      const files = await fs.promises.readdir(imagesDirectory);
+      meals.forEach((meal) => {
+        const imagePath =
+          files.find((file) => file === meal.imagePath) ||
+          MealPlaceholderFileName;
+        const fullImagePath = path.join(imagesDirectory, imagePath);
+        const encodedImage = fs.readFileSync(fullImagePath).toString('base64');
+        meal.encodedImage = encodedImage;
+        mealsToReturn.push({
+          ...meal,
+          encodedImage,
+        });
+      });
+    } catch (err) {
+      throw new HttpException(err.message, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+    return mealsToReturn;
   }
 }
