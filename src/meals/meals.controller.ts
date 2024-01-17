@@ -12,6 +12,8 @@ export class MealsController {
     if (mealsFound.length === 0) {
       return;
     }
-    return this.mealsService.addUrlImageToPath(mealsFound);
+    return this.mealsService.addUrlImageFromPath(
+      this.mealsService.addAllergiesFromAllergiesName(mealsFound),
+    );
   }
 }

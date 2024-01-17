@@ -1,5 +1,6 @@
 import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
-import { MealTypes, MealPrices, AllergiesName } from '../dto/meal.dto';
+import { MealTypes, MealPrices } from '../dto/meal.dto';
+import { AllergiesName } from '../dto/allergy.dto';
 
 @Entity()
 export class MealEntity {

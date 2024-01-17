@@ -1,4 +1,5 @@
 import { IsNotEmpty, IsOptional } from 'class-validator';
+import { AllergiesName, Allergy } from './allergy.dto';
 
 export class MealDto {
   @IsNotEmpty()
@@ -19,8 +20,11 @@ export class MealDto {
   @IsNotEmpty()
   description: string;
 
+  @IsNotEmpty()
+  allergiesName: AllergiesName[] = [];
+
   @IsOptional()
-  allergies?: AllergiesName[] = [];
+  allergies?: Allergy[];
 
   @IsOptional()
   imageUrl?: string;
@@ -36,14 +40,4 @@ export enum MealTypes {
   Entry = 1,
   Main = 2,
   Dessert = 3,
-}
-
-export enum AllergiesName {
-  Vegan = 1,
-  Gluten = 2,
-  Milk = 3,
-  Crusaceans = 4,
-  Egg = 5,
-  Fish = 6,
-  Peanut = 7,
 }
