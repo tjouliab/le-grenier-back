@@ -1,12 +1,13 @@
 import { IsNotEmpty, IsOptional } from 'class-validator';
 import { AllergiesName, Allergy } from './allergy.dto';
+import { ChefData, ChefName } from './chef.dto';
 
 export class MealDto {
   @IsNotEmpty()
   imagePath: string;
 
   @IsNotEmpty()
-  chefName: string;
+  chefName: ChefName;
 
   @IsNotEmpty()
   mealTitle: string;
@@ -28,6 +29,9 @@ export class MealDto {
 
   @IsOptional()
   imageUrl?: string;
+
+  @IsOptional()
+  chefData?: ChefData;
 }
 
 export enum MealPrices {
