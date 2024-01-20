@@ -57,7 +57,7 @@ export class MealsService {
       },
       {
         imagePath: 'pizzas.jpg',
-        chefName: 'Matthis',
+        chefName: 'Mathis',
         mealTitle: 'Pizzas',
         type: MealTypes.Main,
         price: MealPrices.Cheap,
