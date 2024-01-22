@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsOptional } from 'class-validator';
+import { IsNotEmpty } from 'class-validator';
 import { AllergiesName, Allergy } from './allergy.dto';
 import { ChefData, ChefName } from './chef.dto';
 
@@ -24,13 +24,13 @@ export class MealDto {
   @IsNotEmpty()
   allergiesName: AllergiesName[] = [];
 
-  @IsOptional()
+  @IsNotEmpty()
   allergies?: Allergy[];
 
-  @IsOptional()
+  @IsNotEmpty()
   imageUrl?: string;
 
-  @IsOptional()
+  @IsNotEmpty()
   chefData?: ChefData;
 }
 
