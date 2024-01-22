@@ -3,6 +3,7 @@ import { MealDto, MealPrices, MealTypes } from './dto/meal.dto';
 import * as fs from 'fs';
 import * as path from 'path';
 import { AllergiesList, AllergiesName } from './dto/allergy.dto';
+import { ChefList, ChefName, MatteoChef } from './dto/chef.dto';
 
 const MealPlaceholderFileName = 'meal-placeholder.jpg';
 
@@ -13,7 +14,7 @@ export class MealsService {
       // Les Entrées
       {
         imagePath: 'quiches.jpg',
-        chefName: 'Élise',
+        chefName: ChefName.Elise,
         mealTitle: 'Quîches',
         type: MealTypes.Entry,
         price: MealPrices.Normal,
@@ -28,7 +29,7 @@ export class MealsService {
       // Les plats
       {
         imagePath: 'pates-pesto.jpg',
-        chefName: 'Mattéo',
+        chefName: ChefName.Matteo,
         mealTitle: 'Pâtes au pesto',
         type: MealTypes.Main,
         price: MealPrices.Cheap,
@@ -38,7 +39,7 @@ export class MealsService {
       },
       {
         imagePath: 'starling.jpg',
-        chefName: 'Anthony',
+        chefName: ChefName.Anthony,
         mealTitle: 'Starling',
         type: MealTypes.Main,
         price: MealPrices.Normal,
@@ -47,7 +48,7 @@ export class MealsService {
       },
       {
         imagePath: 'outfry.jpg',
-        chefName: 'Nathan',
+        chefName: ChefName.Nathan,
         mealTitle: 'Out Fry',
         type: MealTypes.Main,
         price: MealPrices.Expensive,
@@ -57,7 +58,7 @@ export class MealsService {
       },
       {
         imagePath: 'pizzas.jpg',
-        chefName: 'Mathis',
+        chefName: ChefName.Mathis,
         mealTitle: 'Pizzas',
         type: MealTypes.Main,
         price: MealPrices.Cheap,
@@ -68,7 +69,7 @@ export class MealsService {
       // Les desserts
       {
         imagePath: 'cookies.jpg',
-        chefName: 'Mattéo',
+        chefName: ChefName.Matteo,
         mealTitle: 'Cookies',
         type: MealTypes.Dessert,
         price: MealPrices.Normal,
@@ -82,7 +83,7 @@ export class MealsService {
       },
       {
         imagePath: 'crepes.jpg',
-        chefName: 'Thelma',
+        chefName: ChefName.Thelma,
         mealTitle: 'Crêpes',
         type: MealTypes.Dessert,
         price: MealPrices.Cheap,
@@ -127,6 +128,29 @@ export class MealsService {
         meal.allergies = [];
       }
     });
+    return meals;
+  }
+
+  addChefFromChefName(meals: MealDto[]): MealDto[] {
+    meals.forEach((meal) => {
+      if (meal.chefName) {
+        const chefFound = ChefList.find((chef) => chef.id === meal.chefName);
+        if (chefFound) {
+          meal.chefData = chefFound;
+        } else {
+          meal.chefData = MatteoChef;
+        }
+      } else {
+        meal.chefData = MatteoChef;
+      }
+    });
+    return meals;
+  }
+
+  async addComplementaryData(meals: MealDto[]): Promise<MealDto[]> {
+    meals = this.addAllergiesFromAllergiesName(meals);
+    meals = await this.addUrlImageFromPath(meals);
+    meals = this.addChefFromChefName(meals);
     return meals;
   }
 }
