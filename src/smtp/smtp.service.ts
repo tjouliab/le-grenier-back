@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { ContactFormMailDto } from '../dto/contactFormMailBody.dto';
+import { ContactFormMailDto } from './dto/contactFormMailBody.dto';
 // import * as fs from 'fs';
 
 @Injectable()

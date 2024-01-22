@@ -7,7 +7,7 @@ import {
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
-import { ContactFormMailDto } from '../dto/contactFormMailBody.dto';
+import { ContactFormMailDto } from './dto/contactFormMailBody.dto';
 import { SmtpService } from './smtp.service';
 
 @Controller('smtp')

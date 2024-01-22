@@ -7,6 +7,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { MealEntity } from './meals/entities/meal.entity';
 import { join } from 'path';
 import { ServeStaticModule } from '@nestjs/serve-static';
+import { BedroomsModule } from './bedrooms/bedrooms.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { ServeStaticModule } from '@nestjs/serve-static';
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', ''),
     }),
+    BedroomsModule,
     // TypeOrmModule.forRoot({
     //   type: 'mysql',
     //   host: 'localhost',
