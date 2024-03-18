@@ -55,7 +55,7 @@ export const HugoChef: ChefData = {
 export const EliseChef: ChefData = {
   id: 3,
   name: 'Elise',
-  picturePath: '',
+  picturePath: 'elise.jpg',
   status: 'Squatteuse à temps partiel',
   arrivalDay: moment.utc().set({
     minute: 0,

@@ -6,6 +6,7 @@ import { AllergiesList, AllergiesName } from './dto/allergy.dto';
 import { ChefList, ChefName, MatteoChef } from './dto/chef.dto';
 
 const MealPlaceholderFileName = 'meal-placeholder.jpg';
+const ChefPlaceholderFileName = 'person-placeholder.jpg';
 
 @Injectable()
 export class MealsService {
@@ -98,7 +99,7 @@ export class MealsService {
     ];
   }
 
-  async addUrlImageFromPath(meals: MealDto[]): Promise<MealDto[]> {
+  async addUrlMealImageFromPath(meals: MealDto[]): Promise<MealDto[]> {
     const imagesDirectory: string = path.resolve(
       __dirname,
       '../../src/assets/images/meals',
@@ -111,6 +112,26 @@ export class MealsService {
           MealPlaceholderFileName;
         const fullImagePath = `${process.env.IMAGES_PATH_URL}meals/${imagePath}`;
         meal.imageUrl = fullImagePath;
+      });
+    } catch (err) {
+      throw new HttpException(err.message, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+    return meals;
+  }
+
+  async addUrlChefImageFromPath(meals: MealDto[]): Promise<MealDto[]> {
+    const imagesDirectory: string = path.resolve(
+      __dirname,
+      '../../src/assets/images/chefs',
+    );
+    try {
+      const files = await fs.promises.readdir(imagesDirectory);
+      meals.forEach((meal) => {
+        const imagePath =
+          files.find((file) => file === meal.chefData.picturePath) ||
+          ChefPlaceholderFileName;
+        const fullImagePath = `${process.env.IMAGES_PATH_URL}chefs/${imagePath}`;
+        meal.chefData.picturePath = fullImagePath;
       });
     } catch (err) {
       throw new HttpException(err.message, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -149,8 +170,9 @@ export class MealsService {
 
   async addComplementaryData(meals: MealDto[]): Promise<MealDto[]> {
     meals = this.addAllergiesFromAllergiesName(meals);
-    meals = await this.addUrlImageFromPath(meals);
     meals = this.addChefFromChefName(meals);
+    meals = await this.addUrlMealImageFromPath(meals);
+    meals = await this.addUrlChefImageFromPath(meals);
     return meals;
   }
 }
