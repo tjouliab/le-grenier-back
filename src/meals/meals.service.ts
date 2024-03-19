@@ -128,7 +128,7 @@ export class MealsService {
       const files = await fs.promises.readdir(imagesDirectory);
       meals.forEach((meal) => {
         const imagePath =
-          files.find((file) => file === meal.chefData.picturePath) ||
+          files.find((file) => file === `${meal.chefData.id.toString()}.jpg`) ||
           ChefPlaceholderFileName;
         const fullImagePath = `${process.env.IMAGES_PATH_URL}chefs/${imagePath}`;
         meal.chefData.picturePath = fullImagePath;
