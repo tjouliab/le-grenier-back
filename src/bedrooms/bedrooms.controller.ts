@@ -8,10 +8,6 @@ export class BedroomsController {
 
   @Get()
   async findAll(): Promise<BedroomDto[]> {
-    const bedroomsFound: BedroomDto[] = this.bedroomsService.findAll();
-    if (bedroomsFound.length === 0) {
-      return;
-    }
     return this.bedroomsService.findAll();
   }
 }
